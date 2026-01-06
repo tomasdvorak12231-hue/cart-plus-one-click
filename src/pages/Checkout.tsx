@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, CreditCard, Check, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 import Header from '@/components/Header';
 import CartSidebar from '@/components/CartSidebar';
 
 const Checkout = () => {
   const { items, totalPrice, updateQuantity, removeFromCart, clearCart } = useCart();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -73,16 +75,16 @@ const Checkout = () => {
         <CartSidebar />
         <main className="pt-24 pb-16">
           <div className="container mx-auto px-4 max-w-2xl text-center">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Your cart is empty</h1>
+            <h1 className="text-4xl font-bold text-foreground mb-4">{t.yourCartIsEmpty}</h1>
             <p className="text-muted-foreground text-lg mb-8">
-              Add some delicious drinks to get started!
+              {t.addItemsToCart}
             </p>
             <Link
               to="/"
               className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:opacity-90 transition-all"
             >
               <ArrowLeft className="w-5 h-5" />
-              Back to Shop
+              {t.backToShop}
             </Link>
           </div>
         </main>
@@ -101,22 +103,22 @@ const Checkout = () => {
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft className="w-5 h-5" />
-            Back to Shop
+            {t.backToShop}
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Checkout Form */}
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-8">Checkout</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-8">{t.checkout}</h1>
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Contact */}
                 <div className="space-y-4">
-                  <h2 className="text-lg font-semibold text-foreground">Contact</h2>
+                  <h2 className="text-lg font-semibold text-foreground">{t.contactInfo}</h2>
                   <input
                     type="email"
                     name="email"
-                    placeholder="Email address"
+                    placeholder={t.email}
                     value={formData.email}
                     onChange={handleInputChange}
                     required
@@ -126,12 +128,12 @@ const Checkout = () => {
 
                 {/* Shipping */}
                 <div className="space-y-4">
-                  <h2 className="text-lg font-semibold text-foreground">Shipping Address</h2>
+                  <h2 className="text-lg font-semibold text-foreground">{t.shippingAddress}</h2>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <input
                       type="text"
                       name="firstName"
-                      placeholder="First name"
+                      placeholder={t.fullName}
                       value={formData.firstName}
                       onChange={handleInputChange}
                       required
@@ -140,7 +142,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       name="lastName"
-                      placeholder="Last name"
+                      placeholder={t.fullName}
                       value={formData.lastName}
                       onChange={handleInputChange}
                       required
@@ -150,7 +152,7 @@ const Checkout = () => {
                   <input
                     type="text"
                     name="address"
-                    placeholder="Address"
+                    placeholder={t.address}
                     value={formData.address}
                     onChange={handleInputChange}
                     required
@@ -160,7 +162,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       name="city"
-                      placeholder="City"
+                      placeholder={t.city}
                       value={formData.city}
                       onChange={handleInputChange}
                       required
@@ -169,7 +171,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       name="zipCode"
-                      placeholder="ZIP Code"
+                      placeholder={t.postalCode}
                       value={formData.zipCode}
                       onChange={handleInputChange}
                       required
@@ -182,12 +184,12 @@ const Checkout = () => {
                 <div className="space-y-4">
                   <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-primary" />
-                    Payment
+                    {t.paymentDetails}
                   </h2>
                   <input
                     type="text"
                     name="cardNumber"
-                    placeholder="Card number"
+                    placeholder={t.cardNumber}
                     value={formData.cardNumber}
                     onChange={handleInputChange}
                     required
@@ -197,7 +199,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       name="expiry"
-                      placeholder="MM / YY"
+                      placeholder={t.expiryDate}
                       value={formData.expiry}
                       onChange={handleInputChange}
                       required
@@ -206,7 +208,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       name="cvc"
-                      placeholder="CVC"
+                      placeholder={t.cvv}
                       value={formData.cvc}
                       onChange={handleInputChange}
                       required
@@ -227,7 +229,7 @@ const Checkout = () => {
                     </>
                   ) : (
                     <>
-                      Complete Order • ${totalPrice.toFixed(2)}
+                      {t.placeOrder} • ${totalPrice.toFixed(2)}
                     </>
                   )}
                 </button>
@@ -237,7 +239,7 @@ const Checkout = () => {
             {/* Order Summary */}
             <div>
               <div className="bg-card rounded-2xl border border-border p-6 sticky top-24">
-                <h2 className="text-lg font-semibold text-foreground mb-6">Order Summary</h2>
+                <h2 className="text-lg font-semibold text-foreground mb-6">{t.orderSummary}</h2>
 
                 <div className="space-y-4 mb-6">
                   {items.map((item) => (
@@ -278,15 +280,15 @@ const Checkout = () => {
 
                 <div className="border-t border-border pt-4 space-y-3">
                   <div className="flex justify-between text-muted-foreground">
-                    <span>Subtotal</span>
+                    <span>{t.subtotal}</span>
                     <span>${totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
-                    <span>Shipping</span>
-                    <span className="text-primary font-medium">Free</span>
+                    <span>{t.shipping}</span>
+                    <span className="text-primary font-medium">{t.free}</span>
                   </div>
                   <div className="flex justify-between text-xl font-bold text-foreground pt-3 border-t border-border">
-                    <span>Total</span>
+                    <span>{t.total}</span>
                     <span>${totalPrice.toFixed(2)}</span>
                   </div>
                 </div>

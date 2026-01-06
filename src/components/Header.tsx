@@ -1,9 +1,15 @@
-import { ShoppingCart, Droplets } from 'lucide-react';
+import { ShoppingCart, Droplets, Globe } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
   const { totalItems, setIsCartOpen } = useCart();
+  const { language, setLanguage, t } = useLanguage();
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'cs' : 'en');
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
@@ -19,27 +25,39 @@ const Header = () => {
 
         <nav className="hidden md:flex items-center gap-8">
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-            Home
+            {t.home}
           </Link>
           <a href="#products" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-            Products
+            {t.products}
           </a>
           <Link to="/checkout" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-            Checkout
+            {t.checkout}
           </Link>
         </nav>
 
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="relative p-3 rounded-xl bg-card border border-border hover:border-primary hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 group"
-        >
-          <ShoppingCart className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
-          {totalItems > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center justify-center animate-scale-in">
-              {totalItems}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleLanguage}
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-card border border-border hover:border-primary hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 group"
+          >
+            <Globe className="w-4 h-4 text-foreground group-hover:text-primary transition-colors" />
+            <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors uppercase">
+              {language === 'en' ? 'CZ' : 'EN'}
             </span>
-          )}
-        </button>
+          </button>
+
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-3 rounded-xl bg-card border border-border hover:border-primary hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 group"
+          >
+            <ShoppingCart className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent text-accent-foreground text-xs font-bold rounded-full flex items-center justify-center animate-scale-in">
+                {totalItems}
+              </span>
+            )}
+          </button>
+        </div>
       </div>
     </header>
   );
