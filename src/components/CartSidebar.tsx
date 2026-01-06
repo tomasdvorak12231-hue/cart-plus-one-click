@@ -1,9 +1,11 @@
 import { X, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 import { Link } from 'react-router-dom';
 
 const CartSidebar = () => {
   const { items, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, totalPrice, totalItems } = useCart();
+  const { t } = useLanguage();
 
   if (!isCartOpen) return null;
 
@@ -24,7 +26,7 @@ const CartSidebar = () => {
               <ShoppingBag className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-foreground">Your Cart</h2>
+              <h2 className="text-lg font-bold text-foreground">{t.yourCart}</h2>
               <p className="text-sm text-muted-foreground">{totalItems} items</p>
             </div>
           </div>
@@ -43,8 +45,8 @@ const CartSidebar = () => {
               <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-4">
                 <ShoppingBag className="w-10 h-10 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">Your cart is empty</h3>
-              <p className="text-muted-foreground text-sm">Add some refreshing drinks!</p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">{t.yourCartIsEmpty}</h3>
+              <p className="text-muted-foreground text-sm">{t.addItemsToCart}</p>
             </div>
           ) : (
             items.map((item) => (
@@ -56,7 +58,7 @@ const CartSidebar = () => {
                 />
                 <div className="flex-1">
                   <h4 className="font-semibold text-foreground">{item.flavor}</h4>
-                  <p className="text-sm text-muted-foreground">{item.name}</p>
+                  <p className="text-sm text-muted-foreground">Aqua Naturale</p>
                   <p className="text-primary font-bold mt-1">${(item.price * item.quantity).toFixed(2)}</p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -89,7 +91,7 @@ const CartSidebar = () => {
         {items.length > 0 && (
           <div className="p-6 border-t border-border space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Subtotal</span>
+              <span className="text-muted-foreground">{t.subtotal}</span>
               <span className="text-2xl font-bold text-foreground">${totalPrice.toFixed(2)}</span>
             </div>
             <Link
@@ -97,7 +99,7 @@ const CartSidebar = () => {
               onClick={() => setIsCartOpen(false)}
               className="flex items-center justify-center gap-2 w-full py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:opacity-90 transition-opacity active:scale-[0.98]"
             >
-              Checkout
+              {t.proceedToCheckout}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

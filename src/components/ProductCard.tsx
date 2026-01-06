@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react';
 import { Product } from '@/context/CartContext';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface ProductCardProps {
   product: Product;
@@ -8,6 +9,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
+  const { t } = useLanguage();
 
   const colorClasses: Record<string, string> = {
     apple: 'bg-apple/10 border-apple/30',
@@ -19,6 +21,18 @@ const ProductCard = ({ product }: ProductCardProps) => {
     apple: 'bg-apple hover:bg-apple/90',
     strawberry: 'bg-strawberry hover:bg-strawberry/90',
     natural: 'bg-brand hover:bg-brand/90',
+  };
+
+  const flavorTranslations: Record<string, string> = {
+    'Natural': t.natural,
+    'Apple': t.apple,
+    'Strawberry': t.strawberry,
+  };
+
+  const descriptionTranslations: Record<string, string> = {
+    'Natural': t.naturalDesc,
+    'Apple': t.appleDesc,
+    'Strawberry': t.strawberryDesc,
   };
 
   return (
@@ -36,10 +50,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         <div className="space-y-2">
           <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-            {product.name}
+            Aqua Naturale
           </p>
-          <h3 className="text-2xl font-bold text-foreground">{product.flavor}</h3>
-          <p className="text-muted-foreground text-sm">330 mL • Natural Ingredients</p>
+          <h3 className="text-2xl font-bold text-foreground">{flavorTranslations[product.flavor] || product.flavor}</h3>
+          <p className="text-muted-foreground text-sm">{descriptionTranslations[product.flavor]}</p>
         </div>
 
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/50">
@@ -51,7 +65,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-primary-foreground font-semibold transition-all duration-300 active:scale-95 ${accentClasses[product.color]}`}
           >
             <Plus className="w-4 h-4" />
-            Add
+            {t.add}
           </button>
         </div>
       </div>
